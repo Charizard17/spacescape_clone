@@ -1,6 +1,7 @@
 import 'package:flame/components.dart';
+import './knows_game_size.dart';
 
-class Player extends SpriteComponent {
+class Player extends SpriteComponent with KnowsGameSize {
   Vector2 _moveDirection = Vector2.zero();
   double _speed = 300;
 
@@ -16,6 +17,10 @@ class Player extends SpriteComponent {
     super.update(dt);
 
     this.position += _moveDirection.normalized() * _speed * dt;
+
+    this
+        .position
+        .clamp(Vector2.zero() + this.size / 2, gameSize - this.size / 2);
   }
 
   void setMoveDirection(Vector2 newMoveDirection) {
