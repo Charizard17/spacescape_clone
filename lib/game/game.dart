@@ -1,6 +1,8 @@
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:flame/input.dart';
 import 'package:flame/sprite.dart';
+import 'package:spacescape_clone/game/player.dart';
 
 class SpacescapeGame extends FlameGame {
   @override
@@ -13,7 +15,7 @@ class SpacescapeGame extends FlameGame {
       rows: 6,
     );
 
-    SpriteComponent player = SpriteComponent(
+    Player player = Player(
       sprite: spriteSheet.getSpriteById(19),
       size: Vector2(80, 80),
       position: canvasSize / 2,
