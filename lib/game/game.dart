@@ -5,30 +5,32 @@ import 'package:flame/input.dart';
 import 'package:flame/sprite.dart';
 import 'package:spacescape_clone/game/enemy_manager.dart';
 
-import './enemy.dart';
 import './knows_game_size.dart';
 import './player.dart';
+import './enemy.dart';
+import './bullet.dart';
 
-class SpacescapeGame extends FlameGame with PanDetector {
+class SpacescapeGame extends FlameGame with PanDetector, TapDetector {
   late Player player;
   late Enemy enemy;
   Offset? _pointerStartPosition;
   Offset? _pointerCurrentPosition;
   final double _joystickRadius = 50;
   final double _deadzoneRadius = 10;
+  late SpriteSheet _spriteSheet;
 
   @override
   Future<void>? onLoad() async {
     await images.load('simpleSpace_tilesheet_2.png');
 
-    final spriteSheet = SpriteSheet.fromColumnsAndRows(
+    _spriteSheet = SpriteSheet.fromColumnsAndRows(
       image: images.fromCache('simpleSpace_tilesheet_2.png'),
       columns: 8,
       rows: 6,
     );
 
     player = Player(
-      sprite: spriteSheet.getSpriteById(19),
+      sprite: _spriteSheet.getSpriteById(19),
       size: Vector2(80, 80),
       position: canvasSize / 2,
       anchor: Anchor.center,
@@ -36,7 +38,7 @@ class SpacescapeGame extends FlameGame with PanDetector {
 
     add(player);
 
-    EnemyManager enemyManager = EnemyManager(spriteSheet: spriteSheet);
+    EnemyManager enemyManager = EnemyManager(spriteSheet: _spriteSheet);
     add(enemyManager);
 
     return super.onLoad();
@@ -65,6 +67,19 @@ class SpacescapeGame extends FlameGame with PanDetector {
       canvas.drawCircle(delta, _joystickRadius * 0.4,
           Paint()..color = Colors.grey.withAlpha(100));
     }
+  }
+
+  @override
+  void onTapDown(TapDownInfo info) {
+    super.onTapDown(info);
+
+    Bullet bullet = Bullet(
+      sprite: _spriteSheet.getSpriteById(28),
+      size: Vector2(50, 50),
+      position: this.player.position,
+      anchor: Anchor.center,
+    );
+    add(bullet);
   }
 
   @override
