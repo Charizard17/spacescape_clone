@@ -3,6 +3,7 @@ import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame/sprite.dart';
+import 'package:spacescape_clone/game/enemy_manager.dart';
 
 import './enemy.dart';
 import './knows_game_size.dart';
@@ -35,14 +36,8 @@ class SpacescapeGame extends FlameGame with PanDetector {
 
     add(player);
 
-    enemy = Enemy(
-      sprite: spriteSheet.getSpriteById(19),
-      size: Vector2(80, 80),
-      position: canvasSize / 2 + Vector2(0, -100),
-      anchor: Anchor.center,
-    );
-
-    add(enemy);
+    EnemyManager enemyManager = EnemyManager(spriteSheet: spriteSheet);
+    add(enemyManager);
 
     return super.onLoad();
   }
