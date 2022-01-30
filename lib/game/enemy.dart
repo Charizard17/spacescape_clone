@@ -1,10 +1,13 @@
 import 'dart:math';
 
 import 'package:flame/components.dart';
+import 'package:flame/geometry.dart';
 
 import './knows_game_size.dart';
+import './bullet.dart';
 
-class Enemy extends SpriteComponent with KnowsGameSize {
+class Enemy extends SpriteComponent
+    with KnowsGameSize, HasHitboxes, Collidable {
   double _speed = 200;
 
   Enemy({
@@ -14,6 +17,23 @@ class Enemy extends SpriteComponent with KnowsGameSize {
     Anchor? anchor,
   }) : super(sprite: sprite, position: position, size: size, anchor: anchor) {
     angle = pi;
+  }
+
+  @override
+  void onMount() {
+    super.onMount();
+    
+    final shape = HitboxCircle(normalizedRadius: 0.8);
+    addHitbox(shape);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, Collidable other) {
+    super.onCollision(intersectionPoints, other);
+
+    if (other is Bullet) {
+      this.removeFromParent();
+    }
   }
 
   @override

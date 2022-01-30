@@ -1,6 +1,9 @@
 import 'package:flame/components.dart';
+import 'package:flame/geometry.dart';
 
-class Bullet extends SpriteComponent {
+import './enemy.dart';
+
+class Bullet extends SpriteComponent with HasHitboxes, Collidable {
   double _speed = 500;
 
   Bullet({
@@ -9,6 +12,23 @@ class Bullet extends SpriteComponent {
     Vector2? size,
     Anchor? anchor,
   }) : super(sprite: sprite, position: position, size: size, anchor: anchor);
+
+  @override
+  void onMount() {
+    super.onMount();
+
+    final shape = HitboxCircle(normalizedRadius: 0.4);
+    addHitbox(shape);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, Collidable other) {
+    super.onCollision(intersectionPoints, other);
+
+    if (other is Enemy) {
+      this.removeFromParent();
+    }
+  }
 
   @override
   void update(double dt) {
