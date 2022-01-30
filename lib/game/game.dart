@@ -11,13 +11,15 @@ import './enemy.dart';
 import './bullet.dart';
 
 class SpacescapeGame extends FlameGame with PanDetector, TapDetector {
-  late Player player;
-  late Enemy enemy;
-  Offset? _pointerStartPosition;
-  Offset? _pointerCurrentPosition;
   final double _joystickRadius = 50;
   final double _deadzoneRadius = 10;
+  Offset? _pointerStartPosition;
+  Offset? _pointerCurrentPosition;
+
+  late Player player;
+  late Enemy enemy;
   late SpriteSheet _spriteSheet;
+  late EnemyManager _enemyManager;
 
   @override
   Future<void>? onLoad() async {
@@ -38,10 +40,38 @@ class SpacescapeGame extends FlameGame with PanDetector, TapDetector {
 
     add(player);
 
-    EnemyManager enemyManager = EnemyManager(spriteSheet: _spriteSheet);
-    add(enemyManager);
+    _enemyManager = EnemyManager(spriteSheet: _spriteSheet);
+    add(_enemyManager);
 
     return super.onLoad();
+  }
+
+  @override
+  void update(double dt) {
+    super.update(dt);
+
+    final bullets = children.whereType<Bullet>();
+    final enemies = children.whereType<Enemy>();
+
+    for (final enemy in enemies) {
+      if (enemy.shouldRemove) {
+        continue;
+      }
+      for (final bullet in bullets) {
+        if (bullet.shouldRemove) {
+          continue;
+        }
+        if (enemy.containsPoint(bullet.absoluteCenter)) {
+          enemy.removeFromParent();
+          bullet.removeFromParent();
+          break;
+        }
+      }
+
+      if (player.containsPoint(enemy.absoluteCenter)) {
+        print('enemy hit to player');
+      }
+    }
   }
 
   @override
