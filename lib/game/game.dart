@@ -1,13 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame/sprite.dart';
-import 'package:flutter/material.dart';
-import 'package:spacescape_clone/game/knows_game_size.dart';
-import 'package:spacescape_clone/game/player.dart';
+
+import './enemy.dart';
+import './knows_game_size.dart';
+import './player.dart';
 
 class SpacescapeGame extends FlameGame with PanDetector {
   late Player player;
+  late Enemy enemy;
   Offset? _pointerStartPosition;
   Offset? _pointerCurrentPosition;
   final double _joystickRadius = 50;
@@ -31,6 +34,15 @@ class SpacescapeGame extends FlameGame with PanDetector {
     );
 
     add(player);
+
+    enemy = Enemy(
+      sprite: spriteSheet.getSpriteById(19),
+      size: Vector2(80, 80),
+      position: canvasSize / 2 + Vector2(0, -100),
+      anchor: Anchor.center,
+    );
+
+    add(enemy);
 
     return super.onLoad();
   }
