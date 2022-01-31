@@ -12,10 +12,13 @@ import './enemy.dart';
 
 class Player extends SpriteComponent
     with KnowsGameSize, HasHitboxes, Collidable, HasGameRef<SpacescapeGame> {
+  final JoystickComponent joystick;
+
   Vector2 _moveDirection = Vector2.zero();
   double _speed = 300;
-  final JoystickComponent joystick;
-  
+  int score = 0;
+  int health = 100;
+
   Random _random = Random();
   Vector2 getRandomVector() {
     return (Vector2.random(_random) - Vector2(0.5, -2)) * 250;
@@ -78,7 +81,12 @@ class Player extends SpriteComponent
     super.onCollision(intersectionPoints, other);
 
     if (other is Enemy) {
-      print('Player hit an enemy');
+      gameRef.camera.shake();
+
+      health -= 10;
+      if (health <= 0) {
+        health = 0;
+      }
     }
   }
 }

@@ -7,6 +7,7 @@ import 'package:flame/geometry.dart';
 import 'package:flame/particles.dart';
 
 import './knows_game_size.dart';
+import './player.dart';
 import './bullet.dart';
 import './game.dart';
 
@@ -40,8 +41,10 @@ class Enemy extends SpriteComponent
   void onCollision(Set<Vector2> intersectionPoints, Collidable other) {
     super.onCollision(intersectionPoints, other);
 
-    if (other is Bullet) {
+    if (other is Bullet || other is Player) {
       this.removeFromParent();
+
+      gameRef.player.score += 1;
 
       final particleComponent = ParticleComponent(
         Particle.generate(
