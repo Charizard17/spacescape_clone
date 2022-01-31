@@ -1,14 +1,23 @@
 import 'dart:math';
+import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
+import 'package:flame/particles.dart';
 
 import './knows_game_size.dart';
 import './bullet.dart';
+import './game.dart';
 
 class Enemy extends SpriteComponent
-    with KnowsGameSize, HasHitboxes, Collidable {
+    with KnowsGameSize, HasHitboxes, Collidable, HasGameRef<SpacescapeGame> {
   double _speed = 200;
+
+  Random _random = Random();
+  Vector2 getRandomVector() {
+    return (Vector2.random(_random) - Vector2.random(_random)) * 400;
+  }
 
   Enemy({
     Sprite? sprite,
@@ -22,7 +31,7 @@ class Enemy extends SpriteComponent
   @override
   void onMount() {
     super.onMount();
-    
+
     final shape = HitboxCircle(normalizedRadius: 0.8);
     addHitbox(shape);
   }
@@ -33,6 +42,23 @@ class Enemy extends SpriteComponent
 
     if (other is Bullet) {
       this.removeFromParent();
+
+      final particleComponent = ParticleComponent(
+        Particle.generate(
+          count: 15,
+          lifespan: 0.1,
+          generator: (index) => AcceleratedParticle(
+            acceleration: getRandomVector(),
+            speed: getRandomVector(),
+            position: this.position,
+            child: CircleParticle(
+              radius: 1.5,
+              paint: Paint()..color = Colors.white,
+            ),
+          ),
+        ),
+      );
+      gameRef.add(particleComponent);
     }
   }
 

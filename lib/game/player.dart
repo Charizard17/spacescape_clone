@@ -15,6 +15,7 @@ class Player extends SpriteComponent
   Vector2 _moveDirection = Vector2.zero();
   double _speed = 300;
   final JoystickComponent joystick;
+  
   Random _random = Random();
   Vector2 getRandomVector() {
     return (Vector2.random(_random) - Vector2(0.5, -2)) * 250;
