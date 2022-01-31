@@ -9,5 +9,10 @@ void main() {
   Flame.device.fullScreen();
   final SpacescapeGame game = SpacescapeGame();
 
-  runApp(GameWidget(game: game));
+  runApp(
+    Padding(
+      padding: const EdgeInsets.only(top: 40),
+      child: GameWidget(game: game),
+    ),
+  );
 }
