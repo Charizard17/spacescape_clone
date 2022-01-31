@@ -1,7 +1,10 @@
 import 'dart:ui';
+import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
+import 'package:flame/particles.dart';
+import 'package:flutter/material.dart';
 
 import './game.dart';
 import './knows_game_size.dart';
@@ -12,6 +15,10 @@ class Player extends SpriteComponent
   Vector2 _moveDirection = Vector2.zero();
   double _speed = 300;
   final JoystickComponent joystick;
+  Random _random = Random();
+  Vector2 getRandomVector() {
+    return (Vector2.random(_random) - Vector2(0.5, -2)) * 250;
+  }
 
   Player({
     Sprite? sprite,
@@ -34,6 +41,23 @@ class Player extends SpriteComponent
     this
         .position
         .clamp(Vector2.zero() + this.size / 2, gameSize - this.size / 2);
+
+    final particleComponent = ParticleComponent(
+      Particle.generate(
+        count: 10,
+        lifespan: 0.1,
+        generator: (index) => AcceleratedParticle(
+          acceleration: getRandomVector(),
+          speed: getRandomVector(),
+          position: this.position.clone() + Vector2(0, this.size.y / 3.5),
+          child: CircleParticle(
+            radius: 1,
+            paint: Paint()..color = Colors.white,
+          ),
+        ),
+      ),
+    );
+    gameRef.add(particleComponent);
   }
 
   void setMoveDirection(Vector2 newMoveDirection) {

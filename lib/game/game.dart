@@ -43,7 +43,7 @@ class SpacescapeGame extends FlameGame
         anchor: Anchor.center,
       ),
       margin: const EdgeInsets.only(
-        right: 30,
+        right: 20,
         bottom: 60,
       ),
       onPressed: () {
