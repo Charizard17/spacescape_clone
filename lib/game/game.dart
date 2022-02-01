@@ -5,6 +5,7 @@ import 'package:flame/input.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame/palette.dart';
 
+import './command.dart';
 import './enemy_manager.dart';
 import './knows_game_size.dart';
 import './player.dart';
@@ -15,13 +16,16 @@ class SpacescapeGame extends FlameGame
     with HasCollidables, HasDraggables, HasTappables {
   final double _joystickRadius = 50;
 
-  late Player player;
+  late Player _player;
   late SpriteSheet spriteSheet;
   late EnemyManager _enemyManager;
   late JoystickComponent joystick;
 
   late TextComponent _playerScore;
   late TextComponent _playerHealth;
+
+  final _commandList = List<Command>.empty(growable: true);
+  final _addLaterCommandList = List<Command>.empty(growable: true);
 
   @override
   Future<void>? onLoad() async {
@@ -52,7 +56,7 @@ class SpacescapeGame extends FlameGame
         Bullet bullet = Bullet(
           sprite: spriteSheet.getSpriteById(28),
           size: Vector2(50, 50),
-          position: this.player.position,
+          position: this._player.position,
           anchor: Anchor.center,
         );
         add(bullet);
@@ -71,7 +75,7 @@ class SpacescapeGame extends FlameGame
     );
     add(joystick);
 
-    player = Player(
+    _player = Player(
       sprite: spriteSheet.getSpriteById(19),
       size: Vector2(80, 80),
       position: canvasSize / 2,
@@ -79,7 +83,7 @@ class SpacescapeGame extends FlameGame
       joystick: joystick,
     );
 
-    add(player);
+    add(_player);
 
     _enemyManager = EnemyManager(spriteSheet: spriteSheet);
     add(_enemyManager);
@@ -120,8 +124,18 @@ class SpacescapeGame extends FlameGame
   void update(double dt) {
     super.update(dt);
 
-    _playerScore.text = 'Score: ${player.score}';
-    _playerHealth.text = 'Health: ${player.health}%';
+    _commandList.forEach((command) {
+      children.forEach((child) {
+        command.run(child);
+      });
+    });
+
+    _commandList.clear();
+    _commandList.addAll(_addLaterCommandList);
+    _addLaterCommandList.clear();
+
+    _playerScore.text = 'Score: ${_player.score}';
+    _playerHealth.text = 'Health: ${_player.health}%';
   }
 
   @override
@@ -145,9 +159,13 @@ class SpacescapeGame extends FlameGame
   @override
   void render(Canvas canvas) {
     canvas.drawRect(
-      Rect.fromLTWH(size.x - 145, 10, 140 * player.health / 100, 25),
+      Rect.fromLTWH(size.x - 145, 10, 140 * _player.health / 100, 25),
       Paint()..color = Color.fromARGB(255, 191, 4, 4),
     );
     super.render(canvas);
+  }
+
+  void addCommand(Command command) {
+    _addLaterCommandList.add(command);
   }
 }

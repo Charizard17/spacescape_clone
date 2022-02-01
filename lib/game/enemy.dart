@@ -6,6 +6,7 @@ import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/particles.dart';
 
+import './command.dart';
 import './knows_game_size.dart';
 import './player.dart';
 import './bullet.dart';
@@ -44,7 +45,10 @@ class Enemy extends SpriteComponent
     if (other is Bullet || other is Player) {
       this.removeFromParent();
 
-      gameRef.player.score += 1;
+      final command = Command<Player>(action: (player) {
+        player.addToScore(1);
+      });
+      gameRef.addCommand(command);
 
       final particleComponent = ParticleComponent(
         Particle.generate(

@@ -16,8 +16,10 @@ class Player extends SpriteComponent
 
   Vector2 _moveDirection = Vector2.zero();
   double _speed = 300;
-  int score = 0;
-  int health = 100;
+  int _score = 0;
+  int get score => _score;
+  int _health = 100;
+  int get health => _health;
 
   Random _random = Random();
   Vector2 getRandomVector() {
@@ -83,10 +85,14 @@ class Player extends SpriteComponent
     if (other is Enemy) {
       gameRef.camera.shake();
 
-      health -= 10;
-      if (health <= 0) {
-        health = 0;
+      _health -= 10;
+      if (_health <= 0) {
+        _health = 0;
       }
     }
+  }
+
+  void addToScore(int points) {
+    _score += points;
   }
 }
