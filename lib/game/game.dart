@@ -39,18 +39,18 @@ class SpacescapeGame extends FlameGame
 
     final fireButton = HudButtonComponent(
       button: CircleComponent(
-        radius: 25,
-        anchor: Anchor.center,
+        radius: 27,
         paint: BasicPalette.white.withAlpha(100).paint(),
+        anchor: Anchor.topLeft,
       ),
       buttonDown: CircleComponent(
-        radius: 28,
+        radius: 30,
         paint: BasicPalette.white.withAlpha(200).paint(),
-        anchor: Anchor.center,
+        anchor: Anchor.topLeft,
       ),
       margin: const EdgeInsets.only(
-        right: 20,
-        bottom: 60,
+        right: 30,
+        bottom: 70,
       ),
       onPressed: () {
         Bullet bullet = Bullet(
