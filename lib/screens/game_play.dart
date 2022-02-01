@@ -9,7 +9,7 @@ class GamePlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.yellow,
+      color: Colors.amber,
       child: SafeArea(
         child: WillPopScope(
           onWillPop: () async => false,

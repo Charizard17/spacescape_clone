@@ -22,11 +22,11 @@ class MainMenu extends StatelessWidget {
                         .bodyText1
                         ?.copyWith(shadows: [
                       Shadow(
-                        blurRadius: 20.0,
-                        color: Colors.white,
+                        blurRadius: 25.0,
+                        color: Colors.yellow,
                         offset: Offset(0, 0),
                       ),
-                    ], fontSize: 30),
+                    ], fontSize: 40),
                   ),
                   Text(
                     'Clone',
@@ -35,28 +35,47 @@ class MainMenu extends StatelessWidget {
                         .bodyText1
                         ?.copyWith(shadows: [
                       Shadow(
-                        blurRadius: 20.0,
-                        color: Colors.white,
+                        blurRadius: 25.0,
+                        color: Colors.yellow,
                         offset: Offset(0, 0),
                       ),
-                    ], fontSize: 30),
+                    ], fontSize: 40),
                   ),
                 ],
               ),
             ),
-            ElevatedButton(
-              child: Text('Play'),
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => GamePlay()),
-                );
-              },
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 5 * 2,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.amber,
+                ),
+                child: Text(
+                  'Play',
+                  style: TextStyle(fontSize: 19, color: Colors.black),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => GamePlay()),
+                  );
+                },
+              ),
             ),
-            ElevatedButton(
-              child: Text('Settings'),
-              onPressed: () {
-                // navigate to settings screen
-              },
+            SizedBox(height: 10),
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 5 * 2,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.amber,
+                ),
+                child: Text(
+                  'Settings',
+                  style: TextStyle(fontSize: 19, color: Colors.black),
+                ),
+                onPressed: () {
+                  // navigate to settings screen
+                },
+              ),
             ),
           ],
         ),
