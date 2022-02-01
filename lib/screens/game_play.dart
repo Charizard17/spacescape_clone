@@ -8,9 +8,14 @@ SpacescapeGame _spacescapeGame = SpacescapeGame();
 class GamePlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: GameWidget(game: _spacescapeGame),
+    return Container(
+      color: Colors.yellow,
+      child: SafeArea(
+        child: WillPopScope(
+          onWillPop: () async => false,
+          child: GameWidget(game: _spacescapeGame),
+        ),
+      ),
     );
   }
 }
