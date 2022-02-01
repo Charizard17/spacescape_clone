@@ -13,7 +13,36 @@ class MainMenu extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 50),
-              child: Text('Spacescape Clone'),
+              child: Column(
+                children: [
+                  Text(
+                    'Spacescape',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        ?.copyWith(shadows: [
+                      Shadow(
+                        blurRadius: 20.0,
+                        color: Colors.white,
+                        offset: Offset(0, 0),
+                      ),
+                    ], fontSize: 30),
+                  ),
+                  Text(
+                    'Clone',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        ?.copyWith(shadows: [
+                      Shadow(
+                        blurRadius: 20.0,
+                        color: Colors.white,
+                        offset: Offset(0, 0),
+                      ),
+                    ], fontSize: 30),
+                  ),
+                ],
+              ),
             ),
             ElevatedButton(
               child: Text('Play'),
