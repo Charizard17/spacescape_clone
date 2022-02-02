@@ -9,12 +9,12 @@ import './knows_game_size.dart';
 
 class EnemyManager extends Component
     with KnowsGameSize, HasGameRef<SpacescapeGame> {
-  late Timer timer;
+  late Timer _timer;
   SpriteSheet spriteSheet;
   Random random = Random();
 
   EnemyManager({required this.spriteSheet}) : super() {
-    timer = Timer(1, repeat: true, onTick: _spawnEnemy);
+    _timer = Timer(1, repeat: true, onTick: _spawnEnemy);
   }
 
   void _spawnEnemy() {
@@ -38,18 +38,23 @@ class EnemyManager extends Component
   @override
   void onMount() {
     super.onMount();
-    timer.start();
+    _timer.start();
   }
 
   @override
   void onRemove() {
     super.onRemove();
-    timer.stop();
+    _timer.stop();
   }
 
   @override
   void update(double dt) {
     super.update(dt);
-    timer.update(dt);
+    _timer.update(dt);
+  }
+
+  void reset() {
+    _timer.stop();
+    _timer.start();
   }
 }

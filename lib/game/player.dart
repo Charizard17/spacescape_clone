@@ -95,4 +95,10 @@ class Player extends SpriteComponent
   void addToScore(int points) {
     _score += points;
   }
+
+  void reset() {
+    this._score = 0;
+    this._health = 100;
+    this.position = gameRef.canvasSize / 2;
+  }
 }

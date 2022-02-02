@@ -27,95 +27,101 @@ class SpacescapeGame extends FlameGame
   final _commandList = List<Command>.empty(growable: true);
   final _addLaterCommandList = List<Command>.empty(growable: true);
 
+  bool _isAlreadyLoaded = false;
+
   @override
   Future<void>? onLoad() async {
-    await images.load('simpleSpace_tilesheet_2.png');
+    if (_isAlreadyLoaded == false) {
+      await images.load('simpleSpace_tilesheet_2.png');
 
-    spriteSheet = SpriteSheet.fromColumnsAndRows(
-      image: images.fromCache('simpleSpace_tilesheet_2.png'),
-      columns: 8,
-      rows: 6,
-    );
+      spriteSheet = SpriteSheet.fromColumnsAndRows(
+        image: images.fromCache('simpleSpace_tilesheet_2.png'),
+        columns: 8,
+        rows: 6,
+      );
 
-    final fireButton = HudButtonComponent(
-      button: CircleComponent(
-        radius: 27,
-        paint: BasicPalette.white.withAlpha(100).paint(),
-        anchor: Anchor.topLeft,
-      ),
-      buttonDown: CircleComponent(
-        radius: 30,
-        paint: BasicPalette.white.withAlpha(200).paint(),
-        anchor: Anchor.topLeft,
-      ),
-      margin: const EdgeInsets.only(
-        right: 30,
-        bottom: 70,
-      ),
-      onPressed: () {
-        Bullet bullet = Bullet(
-          sprite: spriteSheet.getSpriteById(28),
-          size: Vector2(50, 50),
-          position: this._player.position,
-          anchor: Anchor.center,
-        );
-        add(bullet);
-      },
-    );
-    add(fireButton);
-
-    joystick = JoystickComponent(
-      knob: CircleComponent(
-          radius: _joystickRadius * 0.4,
-          paint: BasicPalette.white.withAlpha(100).paint()),
-      background: CircleComponent(
-          radius: _joystickRadius,
-          paint: BasicPalette.white.withAlpha(50).paint()),
-      margin: const EdgeInsets.only(left: 40, bottom: 40),
-    );
-    add(joystick);
-
-    _player = Player(
-      sprite: spriteSheet.getSpriteById(19),
-      size: Vector2(80, 80),
-      position: canvasSize / 2,
-      anchor: Anchor.center,
-      joystick: joystick,
-    );
-
-    add(_player);
-
-    _enemyManager = EnemyManager(spriteSheet: spriteSheet);
-    add(_enemyManager);
-
-    _playerScore = TextComponent(
-      text: 'Score: 0',
-      position: Vector2(10, 10),
-      textRenderer: TextPaint(
-        style: TextStyle(
-          fontSize: 20,
-          color: Colors.white,
+      final fireButton = HudButtonComponent(
+        button: CircleComponent(
+          radius: 27,
+          paint: BasicPalette.white.withAlpha(100).paint(),
+          anchor: Anchor.topLeft,
         ),
-      ),
-    );
-    _playerScore.positionType = PositionType.viewport;
-    add(_playerScore);
-
-    _playerHealth = TextComponent(
-      text: 'Health: 100%',
-      position: Vector2(size.x - 10, 10),
-      textRenderer: TextPaint(
-        style: TextStyle(
-          fontSize: 20,
-          color: Colors.white,
+        buttonDown: CircleComponent(
+          radius: 30,
+          paint: BasicPalette.white.withAlpha(200).paint(),
+          anchor: Anchor.topLeft,
         ),
-      ),
-    );
-    _playerHealth.anchor = Anchor.topRight;
-    _playerHealth.positionType = PositionType.viewport;
-    add(_playerHealth);
+        margin: const EdgeInsets.only(
+          right: 30,
+          bottom: 70,
+        ),
+        onPressed: () {
+          Bullet bullet = Bullet(
+            sprite: spriteSheet.getSpriteById(28),
+            size: Vector2(50, 50),
+            position: this._player.position,
+            anchor: Anchor.center,
+          );
+          add(bullet);
+        },
+      );
+      add(fireButton);
 
-    this.camera.defaultShakeIntensity = 10;
+      joystick = JoystickComponent(
+        knob: CircleComponent(
+            radius: _joystickRadius * 0.4,
+            paint: BasicPalette.white.withAlpha(100).paint()),
+        background: CircleComponent(
+            radius: _joystickRadius,
+            paint: BasicPalette.white.withAlpha(50).paint()),
+        margin: const EdgeInsets.only(left: 40, bottom: 40),
+      );
+      add(joystick);
+
+      _player = Player(
+        sprite: spriteSheet.getSpriteById(19),
+        size: Vector2(80, 80),
+        position: canvasSize / 2,
+        anchor: Anchor.center,
+        joystick: joystick,
+      );
+
+      add(_player);
+
+      _enemyManager = EnemyManager(spriteSheet: spriteSheet);
+      add(_enemyManager);
+
+      _playerScore = TextComponent(
+        text: 'Score: 0',
+        position: Vector2(10, 10),
+        textRenderer: TextPaint(
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+          ),
+        ),
+      );
+      _playerScore.positionType = PositionType.viewport;
+      add(_playerScore);
+
+      _playerHealth = TextComponent(
+        text: 'Health: 100%',
+        position: Vector2(size.x - 10, 10),
+        textRenderer: TextPaint(
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+          ),
+        ),
+      );
+      _playerHealth.anchor = Anchor.topRight;
+      _playerHealth.positionType = PositionType.viewport;
+      add(_playerHealth);
+
+      this.camera.defaultShakeIntensity = 10;
+
+      _isAlreadyLoaded = true;
+    }
 
     return super.onLoad();
   }
@@ -167,5 +173,18 @@ class SpacescapeGame extends FlameGame
 
   void addCommand(Command command) {
     _addLaterCommandList.add(command);
+  }
+
+  void resetGame() {
+    _player.reset();
+    _enemyManager.reset();
+
+    children.whereType<Enemy>().forEach((enemy) {
+      enemy.removeFromParent();
+    });
+
+    children.whereType<Bullet>().forEach((bullet) {
+      bullet.removeFromParent();
+    });
   }
 }
