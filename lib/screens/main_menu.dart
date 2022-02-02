@@ -17,29 +17,31 @@ class MainMenu extends StatelessWidget {
                 children: [
                   Text(
                     'Spacescape',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.copyWith(shadows: [
-                      Shadow(
-                        blurRadius: 25.0,
-                        color: Colors.yellow,
-                        offset: Offset(0, 0),
-                      ),
-                    ], fontSize: 40),
+                    style: TextStyle(
+                      fontSize: 40,
+                      color: Colors.black,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 20.0,
+                          color: Colors.amber,
+                          offset: Offset(0, 0),
+                        ),
+                      ],
+                    ),
                   ),
                   Text(
                     'Clone',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1
-                        ?.copyWith(shadows: [
-                      Shadow(
-                        blurRadius: 25.0,
-                        color: Colors.yellow,
-                        offset: Offset(0, 0),
-                      ),
-                    ], fontSize: 40),
+                    style: TextStyle(
+                      fontSize: 40,
+                      color: Colors.black,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 20.0,
+                          color: Colors.amber,
+                          offset: Offset(0, 0),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
