@@ -99,6 +99,6 @@ class Player extends SpriteComponent
   void reset() {
     this._score = 0;
     this._health = 100;
-    this.position = gameRef.canvasSize / 2;
+    this.position = Vector2(size[0] / 2, size[1] / 7 * 5);
   }
 }

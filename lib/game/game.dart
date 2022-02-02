@@ -81,7 +81,7 @@ class SpacescapeGame extends FlameGame
       _player = Player(
         sprite: spriteSheet.getSpriteById(19),
         size: Vector2(80, 80),
-        position: canvasSize / 2,
+        position: Vector2(size[0] / 2, size[1] / 7 * 5),
         anchor: Anchor.center,
         joystick: joystick,
       );
