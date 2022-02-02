@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../screens/main_menu.dart';
 import '../../game/game.dart';
-import 'pause_button.dart';
+import './pause_button.dart';
 
 class PauseMenu extends StatelessWidget {
   static const String ID = 'PauseMenu';
@@ -64,7 +64,7 @@ class PauseMenu extends StatelessWidget {
               onPressed: () {
                 gameRef.overlays.remove(PauseMenu.ID);
                 gameRef.overlays.add(PauseButton.ID);
-                gameRef.resetGame();
+                gameRef.reset();
                 gameRef.resumeEngine();
               },
             ),
@@ -77,17 +77,16 @@ class PauseMenu extends StatelessWidget {
                 primary: Colors.amber,
               ),
               child: Text(
-                'Exit',
+                'Quit Game',
                 style: TextStyle(fontSize: 19, color: Colors.black),
               ),
               onPressed: () {
                 gameRef.overlays.remove(PauseMenu.ID);
-                gameRef.overlays.add(PauseButton.ID);
-                gameRef.resetGame();
+                gameRef.reset();
 
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => MainMenu(),
+                    builder: (context) => const MainMenu(),
                   ),
                 );
               },

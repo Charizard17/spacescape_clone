@@ -81,7 +81,7 @@ class SpacescapeGame extends FlameGame
       _player = Player(
         sprite: spriteSheet.getSpriteById(19),
         size: Vector2(80, 80),
-        position: Vector2(size[0] / 2, size[1] / 7 * 5),
+        position: Vector2(camera.canvasSize.x / 2, camera.canvasSize.y / 7 * 5),
         anchor: Anchor.center,
         joystick: joystick,
       );
@@ -122,7 +122,6 @@ class SpacescapeGame extends FlameGame
 
       _isAlreadyLoaded = true;
     }
-
     return super.onLoad();
   }
 
@@ -175,7 +174,7 @@ class SpacescapeGame extends FlameGame
     _addLaterCommandList.add(command);
   }
 
-  void resetGame() {
+  void reset() {
     _player.reset();
     _enemyManager.reset();
 

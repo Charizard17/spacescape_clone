@@ -8,6 +8,8 @@ import '../widgets/overlays/pause_button.dart';
 SpacescapeGame _spacescapeGame = SpacescapeGame();
 
 class GamePlay extends StatelessWidget {
+  const GamePlay({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
