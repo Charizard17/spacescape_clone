@@ -1,25 +1,28 @@
 import 'dart:ui';
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/particles.dart';
-import 'package:flutter/material.dart';
 
 import './game.dart';
 import './knows_game_size.dart';
 import './enemy.dart';
+import '../models/spaceship_details.dart';
 
 class Player extends SpriteComponent
     with KnowsGameSize, HasHitboxes, Collidable, HasGameRef<SpacescapeGame> {
   final JoystickComponent joystick;
 
   Vector2 _moveDirection = Vector2.zero();
-  double _speed = 300;
   int _score = 0;
   int get score => _score;
   int _health = 100;
   int get health => _health;
+
+  SpaceshipType spaceshipType;
+  Spaceship _spaceship;
 
   Random _random = Random();
   Vector2 getRandomVector() {
@@ -27,12 +30,14 @@ class Player extends SpriteComponent
   }
 
   Player({
+    required this.spaceshipType,
     Sprite? sprite,
     Vector2? position,
     Vector2? size,
     Anchor? anchor,
     required this.joystick,
-  }) : super(sprite: sprite, position: position, size: size, anchor: anchor);
+  })  : this._spaceship = Spaceship.getSpaceshipByType(spaceshipType),
+        super(sprite: sprite, position: position, size: size, anchor: anchor);
 
   @override
   void update(double dt) {
@@ -41,7 +46,7 @@ class Player extends SpriteComponent
     // this.position += _moveDirection.normalized() * _speed * dt;
 
     if (!joystick.delta.isZero()) {
-      position.add(joystick.relativeDelta * _speed * dt);
+      position.add(joystick.relativeDelta * _spaceship.speed * dt);
     }
 
     this
@@ -101,5 +106,11 @@ class Player extends SpriteComponent
     this._health = 100;
     this.position = Vector2(
         gameRef.camera.canvasSize.x / 2, gameRef.camera.canvasSize.y / 7 * 5);
+  }
+
+  void setSpaceshipType(SpaceshipType spaceshipType) {
+    this.spaceshipType = spaceshipType;
+    this._spaceship = Spaceship.getSpaceshipByType(spaceshipType);
+    sprite = gameRef.spriteSheet.getSpriteById(_spaceship.spriteId);
   }
 }

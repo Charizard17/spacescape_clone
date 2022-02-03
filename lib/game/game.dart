@@ -4,7 +4,10 @@ import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame/palette.dart';
+import 'package:provider/provider.dart';
 
+import '../models/spaceship_details.dart';
+import '../models/player_data.dart';
 import './command.dart';
 import './enemy_manager.dart';
 import './knows_game_size.dart';
@@ -78,8 +81,12 @@ class SpacescapeGame extends FlameGame
       );
       add(joystick);
 
+      final spaceshipType = SpaceshipType.Phoenix;
+      final spaceShip = Spaceship.getSpaceshipByType(spaceshipType);
+
       _player = Player(
-        sprite: spriteSheet.getSpriteById(19),
+        spaceshipType: spaceshipType,
+        sprite: spriteSheet.getSpriteById(spaceShip.spriteId),
         size: Vector2(80, 80),
         position: Vector2(camera.canvasSize.x / 2, camera.canvasSize.y / 7 * 5),
         anchor: Anchor.center,
@@ -123,6 +130,16 @@ class SpacescapeGame extends FlameGame
       _isAlreadyLoaded = true;
     }
     return super.onLoad();
+  }
+
+  @override
+  void onAttach() {
+    super.onAttach();
+
+    if (buildContext != null) {
+      final playerData = Provider.of<PlayerData>(buildContext!, listen: false);
+      _player.setSpaceshipType(playerData.spaceshipType);
+    }
   }
 
   @override
