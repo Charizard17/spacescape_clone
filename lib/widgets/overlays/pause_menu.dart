@@ -81,14 +81,14 @@ class PauseMenu extends StatelessWidget {
                 style: TextStyle(fontSize: 19, color: Colors.black),
               ),
               onPressed: () {
-                gameRef.overlays.remove(PauseMenu.ID);
-                gameRef.reset();
+                // gameRef.overlays.remove(PauseMenu.ID);
+                // gameRef.reset();
 
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => const MainMenu(),
-                  ),
-                );
+                // Navigator.of(context).pushReplacement(
+                //   MaterialPageRoute(
+                //     builder: (ctx) => MainMenu(),
+                //   ),
+                // );
               },
             ),
           ),
