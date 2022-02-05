@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import './spaceship_details.dart';
 
 class PlayerData extends ChangeNotifier {
-  final SpaceshipType spaceshipType;
+  SpaceshipType spaceshipType;
   final List<SpaceshipType> ownedSpaceships;
   final int highScore;
-  final int money;
+  int money;
 
   PlayerData({
     required this.spaceshipType,
@@ -28,6 +28,31 @@ class PlayerData extends ChangeNotifier {
     'currentSpaceshipType': SpaceshipType.Phoenix,
     'ownedSpaceshipTypes': [],
     'highScore': 0,
-    'money': 0,
+    'money': 20000,
   };
+
+  bool isOwned(SpaceshipType spaceshipType) {
+    return this.ownedSpaceships.contains(spaceshipType);
+  }
+
+  bool canBuy(SpaceshipType spaceshipType) {
+    return (this.money >= Spaceship.getSpaceshipByType(spaceshipType).cost);
+  }
+
+  bool isEquipped(SpaceshipType spaceshipType) {
+    return (this.spaceshipType == spaceshipType);
+  }
+
+  void buy(SpaceshipType spaceshipType) {
+    if (canBuy(spaceshipType) && !isOwned(spaceshipType)) {
+      this.money -= Spaceship.getSpaceshipByType(spaceshipType).cost;
+      this.ownedSpaceships.add(spaceshipType);
+      notifyListeners();
+    }
+  }
+
+  void equip(SpaceshipType spaceshipType) {
+    this.spaceshipType = spaceshipType;
+    notifyListeners();
+  }
 }

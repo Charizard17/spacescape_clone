@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
+import 'package:provider/provider.dart';
+import 'package:spacescape_clone/models/player_data.dart';
 import 'package:spacescape_clone/screens/main_menu.dart';
 
 import '../models/spaceship_details.dart';
@@ -16,7 +18,7 @@ class SelectSpaceship extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 50),
+              padding: const EdgeInsets.symmetric(vertical: 30),
               child: Text(
                 'Select',
                 style: TextStyle(
@@ -32,6 +34,19 @@ class SelectSpaceship extends StatelessWidget {
                 ),
               ),
             ),
+            Consumer<PlayerData>(builder: (context, playerData, child) {
+              final spaceship =
+                  Spaceship.getSpaceshipByType(playerData.spaceshipType);
+
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Equipped: ${spaceship.name}'),
+                  SizedBox(height: 5),
+                  Text('Money: ${playerData.money}'),
+                ],
+              );
+            }),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.4,
               child: CarouselSlider.builder(
@@ -66,15 +81,65 @@ class SelectSpaceship extends StatelessWidget {
                       SizedBox(height: 5),
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 5 * 2,
-                        child: ElevatedButton(
-                          child: Text(
-                            'Select',
-                            style: TextStyle(fontSize: 19, color: Colors.black),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.amber,
-                          ),
-                          onPressed: () {},
+                        child: Consumer<PlayerData>(
+                          builder: (context, playerData, child) {
+                            final type = Spaceship.spaceships.entries
+                                .elementAt(index)
+                                .key;
+                            final isEquipped = playerData.isEquipped(type);
+                            final isOwned = playerData.isOwned(type);
+                            final canBuy = playerData.canBuy(type);
+
+                            return ElevatedButton(
+                              child: Text(
+                                isEquipped
+                                    ? 'Equipped'
+                                    : isOwned
+                                        ? 'Select'
+                                        : 'Buy',
+                                style: TextStyle(
+                                    fontSize: 19, color: Colors.black),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.amber,
+                              ),
+                              onPressed: isEquipped
+                                  ? null
+                                  : () {
+                                      if (isOwned) {
+                                        playerData.equip(type);
+                                      } else {
+                                        if (canBuy) {
+                                          playerData.buy(type);
+                                        } else {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                backgroundColor:
+                                                    Colors.pink.withAlpha(225),
+                                                title: Text(
+                                                  'Insufficent Balance',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                content: Text(
+                                                  'Need ${spaceship.cost - playerData.money} more money',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        }
+                                      }
+                                    },
+                            );
+                          },
                         ),
                       ),
                     ],
@@ -82,6 +147,7 @@ class SelectSpaceship extends StatelessWidget {
                 },
               ),
             ),
+            SizedBox(height: 20),
             SizedBox(
               width: MediaQuery.of(context).size.width / 5 * 2,
               child: ElevatedButton(
