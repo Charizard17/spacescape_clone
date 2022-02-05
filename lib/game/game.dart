@@ -136,18 +136,16 @@ class SpacescapeGame extends FlameGame
 
   @override
   void onAttach() {
-    super.onAttach();
-
     if (buildContext != null) {
       final playerData = Provider.of<PlayerData>(buildContext!, listen: false);
       _player.setSpaceshipType(playerData.spaceshipType);
     }
+
+    super.onAttach();
   }
 
   @override
   void update(double dt) {
-    super.update(dt);
-
     _commandList.forEach((command) {
       children.forEach((child) {
         command.run(child);
@@ -166,24 +164,26 @@ class SpacescapeGame extends FlameGame
       this.overlays.remove(PauseButton.ID);
       this.overlays.add(GameOverMenu.ID);
     }
+
+    super.update(dt);
   }
 
   @override
   void prepare(Component c) {
-    super.prepare(c);
-
     if (c is KnowsGameSize) {
       c.onGameResize(this.size);
     }
+
+    super.prepare(c);
   }
 
   @override
   void onGameResize(Vector2 canvasSize) {
-    super.onGameResize(canvasSize);
-
     this.children.whereType<KnowsGameSize>().forEach((component) {
       component.onGameResize(this.size);
     });
+
+    super.onGameResize(canvasSize);
   }
 
   @override
@@ -192,7 +192,13 @@ class SpacescapeGame extends FlameGame
       Rect.fromLTWH(size.x - 145, 10, 140 * _player.health / 100, 25),
       Paint()..color = Color.fromARGB(255, 191, 4, 4),
     );
+    
     super.render(canvas);
+  }
+
+  @override
+  void lifecycleStateChange(AppLifecycleState state) {
+    super.lifecycleStateChange(state);
   }
 
   void addCommand(Command command) {

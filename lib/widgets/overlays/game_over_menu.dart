@@ -63,14 +63,14 @@ class GameOverMenu extends StatelessWidget {
                 style: TextStyle(fontSize: 19, color: Colors.black),
               ),
               onPressed: () {
-                gameRef.overlays.remove(GameOverMenu.ID);
-                gameRef.reset();
+                // gameRef.overlays.remove(GameOverMenu.ID);
+                // gameRef.reset();
 
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (ctx) => MainMenu(),
-                  ),
-                );
+                // Navigator.of(context).pushReplacement(
+                //   MaterialPageRoute(
+                //     builder: (ctx) => MainMenu(),
+                //   ),
+                // );
               },
             ),
           ),
