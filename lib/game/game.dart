@@ -7,6 +7,7 @@ import 'package:flame/palette.dart';
 import 'package:provider/provider.dart';
 import 'package:spacescape_clone/widgets/overlays/game_over_menu.dart';
 import 'package:spacescape_clone/widgets/overlays/pause_button.dart';
+import 'package:spacescape_clone/widgets/overlays/pause_menu.dart';
 
 import '../models/spaceship_details.dart';
 import '../models/player_data.dart';
@@ -192,12 +193,26 @@ class SpacescapeGame extends FlameGame
       Rect.fromLTWH(size.x - 145, 10, 140 * _player.health / 100, 25),
       Paint()..color = Color.fromARGB(255, 191, 4, 4),
     );
-    
+
     super.render(canvas);
   }
 
   @override
   void lifecycleStateChange(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        break;
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.paused:
+      case AppLifecycleState.detached:
+        if (this._player.health > 0) {
+          this.pauseEngine();
+          this.overlays.remove(PauseButton.ID);
+          this.overlays.add(PauseMenu.ID);
+        }
+        break;
+    }
+
     super.lifecycleStateChange(state);
   }
 

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/particles.dart';
+import 'package:provider/provider.dart';
+import 'package:spacescape_clone/models/player_data.dart';
 
 import './game.dart';
 import './knows_game_size.dart';
@@ -23,6 +25,8 @@ class Player extends SpriteComponent
 
   SpaceshipType spaceshipType;
   Spaceship _spaceship;
+
+  late PlayerData _playerData;
 
   Random _random = Random();
   Vector2 getRandomVector() {
@@ -69,6 +73,11 @@ class Player extends SpriteComponent
       ),
     );
     gameRef.add(particleComponent);
+
+    if (gameRef.buildContext != null) {
+      _playerData =
+          Provider.of<PlayerData>(gameRef.buildContext!, listen: false);
+    }
   }
 
   void setMoveDirection(Vector2 newMoveDirection) {
@@ -81,6 +90,13 @@ class Player extends SpriteComponent
 
     final shape = HitboxCircle(normalizedRadius: 0.8);
     addHitbox(shape);
+
+    // if (gameRef.buildContext != null) {
+    //   _playerData =
+    //       Provider.of<PlayerData>(gameRef.buildContext!, listen: false);
+    // } else {
+    //   print('failed');
+    // }
   }
 
   @override
@@ -99,6 +115,7 @@ class Player extends SpriteComponent
 
   void addToScore(int points) {
     _score += points;
+    _playerData.money += points;
   }
 
   void reset() {

@@ -28,7 +28,7 @@ class PlayerData extends ChangeNotifier {
     'currentSpaceshipType': SpaceshipType.Phoenix,
     'ownedSpaceshipTypes': [],
     'highScore': 0,
-    'money': 20000,
+    'money': 0,
   };
 
   bool isOwned(SpaceshipType spaceshipType) {
