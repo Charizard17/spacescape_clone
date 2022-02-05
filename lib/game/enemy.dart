@@ -16,6 +16,8 @@ class Enemy extends SpriteComponent
     with KnowsGameSize, HasHitboxes, Collidable, HasGameRef<SpacescapeGame> {
   double _speed = 200;
 
+  late Timer _freezeTimer;
+
   Random _random = Random();
   Vector2 getRandomVector() {
     return (Vector2.random(_random) - Vector2.random(_random)) * 400;
@@ -28,6 +30,9 @@ class Enemy extends SpriteComponent
     Anchor? anchor,
   }) : super(sprite: sprite, position: position, size: size, anchor: anchor) {
     angle = pi;
+    _freezeTimer = Timer(2, onTick: () {
+      _speed = 200;
+    });
   }
 
   @override
@@ -73,6 +78,12 @@ class Enemy extends SpriteComponent
     gameRef.add(particleComponent);
   }
 
+  void freeze() {
+    _speed = 0;
+    _freezeTimer.stop();
+    _freezeTimer.start();
+  }
+
   @override
   void update(double dt) {
     super.update(dt);
@@ -82,5 +93,7 @@ class Enemy extends SpriteComponent
     if (this.position.y > this.gameSize.y) {
       removeFromParent();
     }
+
+    _freezeTimer.update(dt);
   }
 }

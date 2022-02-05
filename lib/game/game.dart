@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -76,6 +78,19 @@ class SpacescapeGame extends FlameGame
             anchor: Anchor.center,
           );
           add(bullet);
+
+          if (_player.isShootMultipleBullets) {
+            for (int i = -1; i < 2; i += 2) {
+              Bullet bullet = Bullet(
+                sprite: spriteSheet.getSpriteById(28),
+                size: Vector2(50, 50),
+                position: this._player.position,
+                anchor: Anchor.center,
+              );
+              bullet.direction.rotate(i * pi / 6);
+              add(bullet);
+            }
+          }
         },
       );
       add(fireButton);
@@ -139,12 +154,12 @@ class SpacescapeGame extends FlameGame
 
       _isAlreadyLoaded = true;
 
-      final nuke = Nuke(
+      final multiFire = MultiFire(
         size: Vector2(64, 64),
         position: Vector2(150, 150),
       );
 
-      add(nuke);
+      add(multiFire);
     }
     return super.onLoad();
   }

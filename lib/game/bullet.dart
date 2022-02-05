@@ -5,6 +5,7 @@ import './enemy.dart';
 
 class Bullet extends SpriteComponent with HasHitboxes, Collidable {
   double _speed = 500;
+  Vector2 direction = Vector2(0, -1);
 
   Bullet({
     Sprite? sprite,
@@ -34,7 +35,7 @@ class Bullet extends SpriteComponent with HasHitboxes, Collidable {
   void update(double dt) {
     super.update(dt);
 
-    this.position += Vector2(0, -1) * this._speed * dt;
+    this.position += direction * this._speed * dt;
 
     if (this.position.y < 0) {
       removeFromParent();

@@ -28,6 +28,10 @@ class Player extends SpriteComponent
 
   late PlayerData _playerData;
 
+  bool _shootMultipleBullets = false;
+  bool get isShootMultipleBullets => _shootMultipleBullets;
+  late Timer _powerUpTimer;
+
   Random _random = Random();
   Vector2 getRandomVector() {
     return (Vector2.random(_random) - Vector2(0.5, -2)) * 250;
@@ -41,7 +45,11 @@ class Player extends SpriteComponent
     Anchor? anchor,
     required this.joystick,
   })  : this._spaceship = Spaceship.getSpaceshipByType(spaceshipType),
-        super(sprite: sprite, position: position, size: size, anchor: anchor);
+        super(sprite: sprite, position: position, size: size, anchor: anchor) {
+    _powerUpTimer = Timer(4, onTick: () {
+      _shootMultipleBullets = false;
+    });
+  }
 
   @override
   void update(double dt) {
@@ -78,6 +86,8 @@ class Player extends SpriteComponent
       _playerData =
           Provider.of<PlayerData>(gameRef.buildContext!, listen: false);
     }
+
+    _powerUpTimer.update(dt);
   }
 
   void setMoveDirection(Vector2 newMoveDirection) {
@@ -118,6 +128,13 @@ class Player extends SpriteComponent
     _playerData.money += points;
   }
 
+  void increaseHealthBy(int points) {
+    _health += points;
+    if (_health > 100) {
+      _health = 100;
+    }
+  }
+
   void reset() {
     this._score = 0;
     this._health = 100;
@@ -129,5 +146,11 @@ class Player extends SpriteComponent
     this.spaceshipType = spaceshipType;
     this._spaceship = Spaceship.getSpaceshipByType(spaceshipType);
     sprite = gameRef.spriteSheet.getSpriteById(_spaceship.spriteId);
+  }
+
+  void shootMultipleBullets() {
+    _shootMultipleBullets = true;
+    _powerUpTimer.stop();
+    _powerUpTimer.start();
   }
 }
