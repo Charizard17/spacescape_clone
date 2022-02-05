@@ -5,6 +5,8 @@ import 'package:flame/input.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame/palette.dart';
 import 'package:provider/provider.dart';
+import 'package:spacescape_clone/widgets/overlays/game_over_menu.dart';
+import 'package:spacescape_clone/widgets/overlays/pause_button.dart';
 
 import '../models/spaceship_details.dart';
 import '../models/player_data.dart';
@@ -158,6 +160,12 @@ class SpacescapeGame extends FlameGame
 
     _playerScore.text = 'Score: ${_player.score}';
     _playerHealth.text = 'Health: ${_player.health}%';
+
+    if (_player.health <= 0 && !camera.shaking) {
+      this.pauseEngine();
+      this.overlays.remove(PauseButton.ID);
+      this.overlays.add(GameOverMenu.ID);
+    }
   }
 
   @override

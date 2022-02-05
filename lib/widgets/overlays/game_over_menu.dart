@@ -4,11 +4,11 @@ import '../../screens/main_menu.dart';
 import '../../game/game.dart';
 import './pause_button.dart';
 
-class PauseMenu extends StatelessWidget {
-  static const String ID = 'PauseMenu';
+class GameOverMenu extends StatelessWidget {
+  static const String ID = 'GameOverMenu';
   final SpacescapeGame gameRef;
 
-  const PauseMenu({Key? key, required this.gameRef}) : super(key: key);
+  const GameOverMenu({Key? key, required this.gameRef}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class PauseMenu extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 50),
             child: Text(
-              'Paused',
+              'Game Over',
               style: TextStyle(
                 fontSize: 40,
                 color: Colors.black,
@@ -40,29 +40,11 @@ class PauseMenu extends StatelessWidget {
                 primary: Colors.amber,
               ),
               child: Text(
-                'Resume',
-                style: TextStyle(fontSize: 19, color: Colors.black),
-              ),
-              onPressed: () {
-                gameRef.resumeEngine();
-                gameRef.overlays.remove(PauseMenu.ID);
-                gameRef.overlays.add(PauseButton.ID);
-              },
-            ),
-          ),
-          SizedBox(height: 10),
-          SizedBox(
-            width: MediaQuery.of(context).size.width / 5 * 2,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.amber,
-              ),
-              child: Text(
                 'Restart',
                 style: TextStyle(fontSize: 19, color: Colors.black),
               ),
               onPressed: () {
-                gameRef.overlays.remove(PauseMenu.ID);
+                gameRef.overlays.remove(GameOverMenu.ID);
                 gameRef.overlays.add(PauseButton.ID);
                 gameRef.reset();
                 gameRef.resumeEngine();
@@ -81,14 +63,14 @@ class PauseMenu extends StatelessWidget {
                 style: TextStyle(fontSize: 19, color: Colors.black),
               ),
               onPressed: () {
-                // gameRef.overlays.remove(PauseMenu.ID);
-                // gameRef.reset();
+                gameRef.overlays.remove(GameOverMenu.ID);
+                gameRef.reset();
 
-                // Navigator.of(context).pushReplacement(
-                //   MaterialPageRoute(
-                //     builder: (ctx) => MainMenu(),
-                //   ),
-                // );
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (ctx) => MainMenu(),
+                  ),
+                );
               },
             ),
           ),

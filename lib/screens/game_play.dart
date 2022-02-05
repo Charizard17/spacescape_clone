@@ -1,8 +1,9 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:spacescape_clone/widgets/overlays/pause_menu.dart';
 
 import '../game/game.dart';
+import '../widgets/overlays/pause_menu.dart';
+import '../widgets/overlays/game_over_menu.dart';
 import '../widgets/overlays/pause_button.dart';
 
 SpacescapeGame _spacescapeGame = SpacescapeGame();
@@ -27,6 +28,9 @@ class GamePlay extends StatelessWidget {
                         PauseButton(gameRef: gameRef),
                 PauseMenu.ID: (BuildContext context, SpacescapeGame gameRef) =>
                     PauseMenu(gameRef: gameRef),
+                GameOverMenu.ID:
+                    (BuildContext context, SpacescapeGame gameRef) =>
+                        GameOverMenu(gameRef: gameRef),
               },
             ),
           ),
