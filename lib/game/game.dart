@@ -8,6 +8,7 @@ import 'package:flame/sprite.dart';
 import 'package:flame/palette.dart';
 import 'package:provider/provider.dart';
 
+import './power_up_manager.dart';
 import './power_ups.dart';
 import '../widgets/overlays/game_over_menu.dart';
 import '../widgets/overlays/pause_button.dart';
@@ -28,6 +29,7 @@ class SpacescapeGame extends FlameGame
   late Player _player;
   late SpriteSheet spriteSheet;
   late EnemyManager _enemyManager;
+  late PowerUpManager _powerUpManager;
   late JoystickComponent joystick;
 
   late TextComponent _playerScore;
@@ -123,6 +125,9 @@ class SpacescapeGame extends FlameGame
       _enemyManager = EnemyManager(spriteSheet: spriteSheet);
       add(_enemyManager);
 
+      _powerUpManager = PowerUpManager();
+      add(_powerUpManager);
+
       _playerScore = TextComponent(
         text: 'Score: 0',
         position: Vector2(10, 10),
@@ -153,13 +158,6 @@ class SpacescapeGame extends FlameGame
       this.camera.defaultShakeIntensity = 10;
 
       _isAlreadyLoaded = true;
-
-      final multiFire = MultiFire(
-        size: Vector2(64, 64),
-        position: Vector2(150, 150),
-      );
-
-      add(multiFire);
     }
     return super.onLoad();
   }
@@ -252,6 +250,7 @@ class SpacescapeGame extends FlameGame
   void reset() {
     _player.reset();
     _enemyManager.reset();
+    _powerUpManager.reset();
 
     children.whereType<Enemy>().forEach((enemy) {
       enemy.removeFromParent();
@@ -259,6 +258,10 @@ class SpacescapeGame extends FlameGame
 
     children.whereType<Bullet>().forEach((bullet) {
       bullet.removeFromParent();
+    });
+
+    children.whereType<PowerUp>().forEach((powerUp) {
+      powerUp.removeFromParent();
     });
   }
 }

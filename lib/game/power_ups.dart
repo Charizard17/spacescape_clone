@@ -3,6 +3,7 @@ import 'package:flame/geometry.dart';
 import 'package:spacescape_clone/game/command.dart';
 import 'package:spacescape_clone/game/enemy.dart';
 import 'package:spacescape_clone/game/enemy_manager.dart';
+import 'package:spacescape_clone/game/power_up_manager.dart';
 
 import './game.dart';
 import './player.dart';
@@ -114,6 +115,11 @@ class Freeze extends PowerUp {
       enemyManager.freeze();
     });
     gameRef.addCommand(command2);
+
+    final command3 = Command<PowerUpManager>(action: (powerUpManager) {
+      powerUpManager.freeze();
+    });
+    gameRef.addCommand(command3);
   }
 }
 
