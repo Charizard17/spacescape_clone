@@ -43,30 +43,34 @@ class Enemy extends SpriteComponent
     super.onCollision(intersectionPoints, other);
 
     if (other is Bullet || other is Player) {
-      this.removeFromParent();
+      destroy();
+    }
+  }
 
-      final command = Command<Player>(action: (player) {
-        player.addToScore(1);
-      });
-      gameRef.addCommand(command);
+  void destroy() {
+    this.removeFromParent();
 
-      final particleComponent = ParticleComponent(
-        Particle.generate(
-          count: 15,
-          lifespan: 0.1,
-          generator: (index) => AcceleratedParticle(
-            acceleration: getRandomVector(),
-            speed: getRandomVector(),
-            position: this.position,
-            child: CircleParticle(
-              radius: 1.5,
-              paint: Paint()..color = Colors.white,
-            ),
+    final command = Command<Player>(action: (player) {
+      player.addToScore(1);
+    });
+    gameRef.addCommand(command);
+
+    final particleComponent = ParticleComponent(
+      Particle.generate(
+        count: 15,
+        lifespan: 0.1,
+        generator: (index) => AcceleratedParticle(
+          acceleration: getRandomVector(),
+          speed: getRandomVector(),
+          position: this.position,
+          child: CircleParticle(
+            radius: 1.5,
+            paint: Paint()..color = Colors.white,
           ),
         ),
-      );
-      gameRef.add(particleComponent);
-    }
+      ),
+    );
+    gameRef.add(particleComponent);
   }
 
   @override

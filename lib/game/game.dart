@@ -5,10 +5,11 @@ import 'package:flame/input.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame/palette.dart';
 import 'package:provider/provider.dart';
-import 'package:spacescape_clone/widgets/overlays/game_over_menu.dart';
-import 'package:spacescape_clone/widgets/overlays/pause_button.dart';
-import 'package:spacescape_clone/widgets/overlays/pause_menu.dart';
 
+import './power_ups.dart';
+import '../widgets/overlays/game_over_menu.dart';
+import '../widgets/overlays/pause_button.dart';
+import '../widgets/overlays/pause_menu.dart';
 import '../models/spaceship_details.dart';
 import '../models/player_data.dart';
 import './command.dart';
@@ -38,7 +39,13 @@ class SpacescapeGame extends FlameGame
   @override
   Future<void>? onLoad() async {
     if (_isAlreadyLoaded == false) {
-      await images.load('simpleSpace_tilesheet_2.png');
+      await images.loadAll([
+        'simpleSpace_tilesheet_2.png',
+        'freeze.png',
+        'plus.png',
+        'multi_fire.png',
+        'nuke.png',
+      ]);
 
       spriteSheet = SpriteSheet.fromColumnsAndRows(
         image: images.fromCache('simpleSpace_tilesheet_2.png'),
@@ -131,6 +138,13 @@ class SpacescapeGame extends FlameGame
       this.camera.defaultShakeIntensity = 10;
 
       _isAlreadyLoaded = true;
+
+      final nuke = Nuke(
+        size: Vector2(64, 64),
+        position: Vector2(150, 150),
+      );
+
+      add(nuke);
     }
     return super.onLoad();
   }
