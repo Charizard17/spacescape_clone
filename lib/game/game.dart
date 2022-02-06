@@ -51,6 +51,9 @@ class SpacescapeGame extends FlameGame
         'nuke.png',
       ]);
 
+      final spaceshipType = SpaceshipType.Phoenix;
+      final spaceShip = Spaceship.getSpaceshipByType(spaceshipType);
+
       spriteSheet = SpriteSheet.fromColumnsAndRows(
         image: images.fromCache('simpleSpace_tilesheet_2.png'),
         columns: 8,
@@ -78,6 +81,7 @@ class SpacescapeGame extends FlameGame
             size: Vector2(50, 50),
             position: this._player.position,
             anchor: Anchor.center,
+            level: spaceShip.level,
           );
           add(bullet);
 
@@ -88,6 +92,7 @@ class SpacescapeGame extends FlameGame
                 size: Vector2(50, 50),
                 position: this._player.position,
                 anchor: Anchor.center,
+                level: spaceShip.level,
               );
               bullet.direction.rotate(i * pi / 6);
               add(bullet);
@@ -107,9 +112,6 @@ class SpacescapeGame extends FlameGame
         margin: const EdgeInsets.only(left: 40, bottom: 40),
       );
       add(joystick);
-
-      final spaceshipType = SpaceshipType.Phoenix;
-      final spaceShip = Spaceship.getSpaceshipByType(spaceshipType);
 
       _player = Player(
         spaceshipType: spaceshipType,

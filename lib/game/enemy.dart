@@ -15,8 +15,8 @@ import './game.dart';
 
 class Enemy extends SpriteComponent
     with KnowsGameSize, HasHitboxes, Collidable, HasGameRef<SpacescapeGame> {
-  double _speed = 200;
-
+  late double _speed;
+  int _hitPoints = 10;
   late Timer _freezeTimer;
 
   final EnemyData enemyData;
@@ -40,6 +40,7 @@ class Enemy extends SpriteComponent
   }) : super(sprite: sprite, position: position, size: size, anchor: anchor) {
     angle = pi;
     _speed = enemyData.speed;
+    _hitPoints = enemyData.level * 10;
     _freezeTimer = Timer(2, onTick: () {
       _speed = enemyData.speed;
     });
@@ -61,8 +62,10 @@ class Enemy extends SpriteComponent
   void onCollision(Set<Vector2> intersectionPoints, Collidable other) {
     super.onCollision(intersectionPoints, other);
 
-    if (other is Bullet || other is Player) {
-      destroy();
+    if (other is Bullet) {
+      _hitPoints -= other.level * 10;
+    } else if (other is Player) {
+      _hitPoints = 0;
     }
   }
 
@@ -70,7 +73,7 @@ class Enemy extends SpriteComponent
     this.removeFromParent();
 
     final command = Command<Player>(action: (player) {
-      player.addToScore(1);
+      player.addToScore(enemyData.killPoint);
     });
     gameRef.addCommand(command);
 
@@ -101,6 +104,10 @@ class Enemy extends SpriteComponent
   @override
   void update(double dt) {
     super.update(dt);
+
+    if (_hitPoints <= 0) {
+      destroy();
+    }
 
     this.position += moveDirection * _speed * dt;
 

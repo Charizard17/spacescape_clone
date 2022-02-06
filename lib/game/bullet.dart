@@ -7,11 +7,14 @@ class Bullet extends SpriteComponent with HasHitboxes, Collidable {
   double _speed = 500;
   Vector2 direction = Vector2(0, -1);
 
+  final int level;
+
   Bullet({
-    Sprite? sprite,
-    Vector2? position,
-    Vector2? size,
-    Anchor? anchor,
+    required Sprite? sprite,
+    required Vector2? position,
+    required Vector2? size,
+    required Anchor? anchor,
+    required this.level,
   }) : super(sprite: sprite, position: position, size: size, anchor: anchor);
 
   @override
