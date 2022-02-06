@@ -6,6 +6,7 @@ import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
 import 'package:flame/particles.dart';
 
+import '../models/enemy_data.dart';
 import './command.dart';
 import './knows_game_size.dart';
 import './player.dart';
@@ -18,20 +19,24 @@ class Enemy extends SpriteComponent
 
   late Timer _freezeTimer;
 
+  final EnemyData enemyData;
+
   Random _random = Random();
   Vector2 getRandomVector() {
     return (Vector2.random(_random) - Vector2.random(_random)) * 400;
   }
 
   Enemy({
-    Sprite? sprite,
-    Vector2? position,
-    Vector2? size,
-    Anchor? anchor,
+    required Sprite? sprite,
+    required this.enemyData,
+    required Vector2? position,
+    required Vector2? size,
+    required Anchor? anchor,
   }) : super(sprite: sprite, position: position, size: size, anchor: anchor) {
     angle = pi;
+    _speed = enemyData.speed;
     _freezeTimer = Timer(2, onTick: () {
-      _speed = 200;
+      _speed = enemyData.speed;
     });
   }
 
