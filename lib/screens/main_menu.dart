@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import './settings_menu.dart';
 import './select_spaceship.dart';
 
 class MainMenu extends StatelessWidget {
@@ -78,7 +79,11 @@ class MainMenu extends StatelessWidget {
                   style: TextStyle(fontSize: 19, color: Colors.black),
                 ),
                 onPressed: () {
-                  // navigate to settings screen
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const SettingsMenu(),
+                    ),
+                  );
                 },
               ),
             ),
