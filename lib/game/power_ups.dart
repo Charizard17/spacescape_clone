@@ -61,7 +61,7 @@ class Nuke extends PowerUp {
 
   @override
   Sprite getSprite() {
-    return Sprite(gameRef.images.fromCache('nuke.png'));
+    return PowerUpManager.nukeSprite;
   }
 
   @override
@@ -81,7 +81,7 @@ class Health extends PowerUp {
 
   @override
   Sprite getSprite() {
-    return Sprite(gameRef.images.fromCache('plus.png'));
+    return PowerUpManager.healthSprite;
   }
 
   @override
@@ -101,7 +101,7 @@ class Freeze extends PowerUp {
 
   @override
   Sprite getSprite() {
-    return Sprite(gameRef.images.fromCache('freeze.png'));
+    return PowerUpManager.freezeSprite;
   }
 
   @override
@@ -131,7 +131,7 @@ class MultiFire extends PowerUp {
 
   @override
   Sprite getSprite() {
-    return Sprite(gameRef.images.fromCache('multi_fire.png'));
+    return PowerUpManager.multiFireSprite;
   }
 
   @override

@@ -16,6 +16,11 @@ class PowerUpManager extends Component
   late Timer _spawnTimer;
   late Timer _freezeTimer;
 
+  static late Sprite nukeSprite;
+  static late Sprite healthSprite;
+  static late Sprite freezeSprite;
+  static late Sprite multiFireSprite;
+
   static Map<PowerUpTypes, PowerUp Function(Vector2 position, Vector2 size)>
       _powerUpMap = {
     PowerUpTypes.Health: ((position, size) => Health(
@@ -66,21 +71,29 @@ class PowerUpManager extends Component
 
   @override
   void onMount() {
-    super.onMount();
     _spawnTimer.start();
+
+    nukeSprite = Sprite(gameRef.images.fromCache('nuke.png'));
+    healthSprite = Sprite(gameRef.images.fromCache('plus.png'));
+    freezeSprite = Sprite(gameRef.images.fromCache('freeze.png'));
+    multiFireSprite = Sprite(gameRef.images.fromCache('multi_fire.png'));
+
+    super.onMount();
   }
 
   @override
   void onRemove() {
-    super.onRemove();
     _spawnTimer.stop();
+
+    super.onRemove();
   }
 
   @override
   void update(double dt) {
-    super.update(dt);
     _spawnTimer.update(dt);
     _freezeTimer.update(dt);
+
+    super.update(dt);
   }
 
   void reset() {
