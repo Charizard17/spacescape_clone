@@ -5,22 +5,40 @@ import 'package:provider/provider.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:spacescape_clone/models/player_data.dart';
+import 'package:spacescape_clone/models/settings.dart';
 import 'package:spacescape_clone/models/spaceship_details.dart';
 
 import './screens/main_menu.dart';
 import './game/game.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Flame.device.fullScreen();
+  await Flame.device.fullScreen();
+
+  await initHive();
 
   runApp(
-    FutureProvider<PlayerData>(
-      create: (BuildContext context) => getPlayerData(),
-      initialData: PlayerData.fromMap(PlayerData.defaultData),
+    MultiProvider(
+      providers: [
+        FutureProvider<PlayerData>(
+          create: (BuildContext context) => getPlayerData(),
+          initialData: PlayerData.fromMap(PlayerData.defaultData),
+        ),
+        FutureProvider<Settings>(
+          create: (BuildContext context) => getSettings(),
+          initialData: Settings(soundEffects: false, backgroundMusic: false),
+        ),
+      ],
       builder: (context, child) {
-        return ChangeNotifierProvider<PlayerData>.value(
-          value: Provider.of<PlayerData>(context),
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider<PlayerData>.value(
+              value: Provider.of<PlayerData>(context),
+            ),
+            ChangeNotifierProvider<Settings>.value(
+              value: Provider.of<Settings>(context),
+            ),
+          ],
           child: child,
         );
       },
@@ -43,15 +61,25 @@ Future<void> initHive() async {
 
   Hive.registerAdapter(PlayerDataAdapter());
   Hive.registerAdapter(SpaceshipTypeAdapter());
+  Hive.registerAdapter(SettingsAdapter());
 }
 
 Future<PlayerData> getPlayerData() async {
-  await initHive();
-
-  final box = await Hive.openBox<PlayerData>('PlayerDataBox');
-  final playerData = box.get('PlayerData');
+  final box = await Hive.openBox<PlayerData>(PlayerData.PLAYER_DATA_BOX);
+  final playerData = box.get(PlayerData.PLAYER_DATA_KEY);
   if (playerData == null) {
-    box.put('PlayerData', PlayerData.fromMap(PlayerData.defaultData));
+    box.put(
+        PlayerData.PLAYER_DATA_KEY, PlayerData.fromMap(PlayerData.defaultData));
   }
-  return box.get('PlayerData')!;
+  return box.get(PlayerData.PLAYER_DATA_KEY)!;
+}
+
+Future<Settings> getSettings() async {
+  final box = await Hive.openBox<Settings>(Settings.SETTINGS_BOX);
+  final settings = box.get(Settings.SETTINGS_KEY);
+  if (settings == null) {
+    box.put(Settings.SETTINGS_KEY,
+        Settings(soundEffects: true, backgroundMusic: true));
+  }
+  return box.get(Settings.SETTINGS_KEY)!;
 }

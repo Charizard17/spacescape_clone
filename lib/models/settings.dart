@@ -5,6 +5,9 @@ part 'settings.g.dart';
 
 @HiveType(typeId: 2)
 class Settings extends ChangeNotifier with HiveObjectMixin {
+  static const String SETTINGS_BOX = 'SettingsBox';
+  static const String SETTINGS_KEY = 'Settings';
+
   @HiveField(0)
   bool _soundEffects = false;
   bool get soundEffects => _soundEffects;
