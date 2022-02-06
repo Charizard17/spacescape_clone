@@ -18,8 +18,6 @@ class Player extends SpriteComponent
   final JoystickComponent joystick;
 
   Vector2 _moveDirection = Vector2.zero();
-  int _score = 0;
-  int get score => _score;
   int _health = 100;
   int get health => _health;
 
@@ -27,6 +25,9 @@ class Player extends SpriteComponent
   Spaceship _spaceship;
 
   late PlayerData _playerData;
+  // after _playerData initialized, _score will equal to _playerData.currentScore
+  int _score = 0;
+  int get score => _score;
 
   bool _shootMultipleBullets = false;
   bool get isShootMultipleBullets => _shootMultipleBullets;
@@ -85,6 +86,7 @@ class Player extends SpriteComponent
     if (gameRef.buildContext != null) {
       _playerData =
           Provider.of<PlayerData>(gameRef.buildContext!, listen: false);
+      _score = _playerData.currentScore;
     }
 
     _powerUpTimer.update(dt);
@@ -117,8 +119,7 @@ class Player extends SpriteComponent
   }
 
   void addToScore(int points) {
-    _score += points;
-    _playerData.currentScore = _score;
+    _playerData.currentScore += points;
     _playerData.money += points;
 
     _playerData.save();
@@ -132,7 +133,7 @@ class Player extends SpriteComponent
   }
 
   void reset() {
-    this._score = 0;
+    _playerData.currentScore = 0;
     this._health = 100;
     this.position = Vector2(
         gameRef.camera.canvasSize.x / 2, gameRef.camera.canvasSize.y / 7 * 5);
