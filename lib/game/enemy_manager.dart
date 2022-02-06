@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flame/components.dart';
 import 'package:flame/sprite.dart';
+import 'package:provider/provider.dart';
+import 'package:spacescape_clone/models/player_data.dart';
 
 import './game.dart';
 import './enemy.dart';
@@ -30,18 +32,37 @@ class EnemyManager extends Component
     position.clamp(
         Vector2.zero() + initialSize / 2, gameSize - initialSize / 2);
 
-    final enemyData =
-        _enemyDataList.elementAt(random.nextInt(_enemyDataList.length));
+    if (gameRef.buildContext != null) {
+      int currentScore =
+          Provider.of<PlayerData>(gameRef.buildContext!, listen: false)
+              .currentScore;
 
-    Enemy enemy = Enemy(
-      sprite: spriteSheet.getSpriteById(enemyData.spriteId),
-      enemyData: enemyData,
-      size: initialSize,
-      position: position,
-      anchor: Anchor.center,
-    );
+      int maxLevel = mapScoreToMaxEnemyLevel(currentScore);
 
-    gameRef.add(enemy);
+      final enemyData = _enemyDataList.elementAt(random.nextInt(maxLevel * 3));
+
+      Enemy enemy = Enemy(
+        sprite: spriteSheet.getSpriteById(enemyData.spriteId),
+        enemyData: enemyData,
+        size: initialSize,
+        position: position,
+        anchor: Anchor.center,
+      );
+
+      gameRef.add(enemy);
+    }
+  }
+
+  int mapScoreToMaxEnemyLevel(int score) {
+    int level = 1;
+
+    if (score > 2000) {
+      level = 3;
+    } else if (score > 1000) {
+      level = 2;
+    }
+
+    return level;
   }
 
   @override
@@ -76,7 +97,7 @@ class EnemyManager extends Component
 
   static const List<EnemyData> _enemyDataList = [
     EnemyData(
-      level: 2,
+      level: 1,
       speed: 200,
       killPoint: 20,
       hMove: true,
@@ -90,18 +111,11 @@ class EnemyManager extends Component
       spriteId: 14,
     ),
     EnemyData(
-      level: 3,
+      level: 1,
       speed: 250,
       killPoint: 20,
       hMove: false,
       spriteId: 12,
-    ),
-    EnemyData(
-      level: 2,
-      speed: 275,
-      killPoint: 30,
-      hMove: true,
-      spriteId: 13,
     ),
     EnemyData(
       level: 2,
@@ -118,28 +132,28 @@ class EnemyManager extends Component
       spriteId: 36,
     ),
     EnemyData(
-      level: 1,
+      level: 2,
       speed: 400,
       killPoint: 30,
       hMove: true,
       spriteId: 39,
     ),
     EnemyData(
-      level: 2,
+      level: 3,
       speed: 425,
       killPoint: 40,
       hMove: false,
       spriteId: 40,
     ),
     EnemyData(
-      level: 1,
+      level: 3,
       speed: 450,
       killPoint: 40,
       hMove: false,
       spriteId: 37,
     ),
     EnemyData(
-      level: 1,
+      level: 3,
       speed: 500,
       killPoint: 50,
       hMove: false,

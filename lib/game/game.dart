@@ -157,8 +157,6 @@ class SpacescapeGame extends FlameGame
       _playerHealth.positionType = PositionType.viewport;
       add(_playerHealth);
 
-      this.camera.defaultShakeIntensity = 10;
-
       _isAlreadyLoaded = true;
     }
     return super.onLoad();

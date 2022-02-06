@@ -100,13 +100,6 @@ class Player extends SpriteComponent
 
     final shape = HitboxCircle(normalizedRadius: 0.8);
     addHitbox(shape);
-
-    // if (gameRef.buildContext != null) {
-    //   _playerData =
-    //       Provider.of<PlayerData>(gameRef.buildContext!, listen: false);
-    // } else {
-    //   print('failed');
-    // }
   }
 
   @override
@@ -114,7 +107,7 @@ class Player extends SpriteComponent
     super.onCollision(intersectionPoints, other);
 
     if (other is Enemy) {
-      gameRef.camera.shake();
+      gameRef.camera.shake(intensity: 10);
 
       _health -= 10;
       if (_health <= 0) {
@@ -125,6 +118,7 @@ class Player extends SpriteComponent
 
   void addToScore(int points) {
     _score += points;
+    _playerData.currentScore = _score;
     _playerData.money += points;
   }
 
