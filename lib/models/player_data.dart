@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 import './spaceship_details.dart';
 
+part 'player_data.g.dart';
+
+@HiveType(typeId: 0)
 class PlayerData extends ChangeNotifier {
+  @HiveField(0)
   SpaceshipType spaceshipType;
+
+  @HiveField(1)
   final List<SpaceshipType> ownedSpaceships;
+
+  @HiveField(2)
   final int highScore;
+
+  @HiveField(3)
   int money;
+
   int currentScore = 0;
 
   PlayerData({

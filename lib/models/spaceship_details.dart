@@ -1,3 +1,7 @@
+import 'package:hive/hive.dart';
+
+part 'spaceship_details.g.dart';
+
 class Spaceship {
   final String name;
   final int cost;
@@ -87,13 +91,22 @@ class Spaceship {
   };
 }
 
+@HiveType(typeId: 1)
 enum SpaceshipType {
+  @HiveField(0)
   Phoenix,
+  @HiveField(1)
   Defcom,
+  @HiveField(2)
   Liberator,
+  @HiveField(3)
   Piranha,
+  @HiveField(4)
   Leonov,
+  @HiveField(5)
   Bigboy,
+  @HiveField(6)
   Vengeance,
+  @HiveField(7)
   Goliath,
 }
