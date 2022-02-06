@@ -1,12 +1,13 @@
 import 'package:flame/components.dart';
 import 'package:flame/geometry.dart';
-import 'package:spacescape_clone/game/command.dart';
-import 'package:spacescape_clone/game/enemy.dart';
-import 'package:spacescape_clone/game/enemy_manager.dart';
-import 'package:spacescape_clone/game/power_up_manager.dart';
 
+import './command.dart';
+import './enemy.dart';
+import './enemy_manager.dart';
+import './power_up_manager.dart';
 import './game.dart';
 import './player.dart';
+import 'audio_player_component.dart';
 
 abstract class PowerUp extends SpriteComponent
     with HasGameRef<SpacescapeGame>, HasHitboxes, Collidable {
@@ -45,6 +46,13 @@ abstract class PowerUp extends SpriteComponent
   @override
   void onCollision(Set<Vector2> intersectionPoints, Collidable other) {
     if (other is Player) {
+      gameRef.addCommand(
+        Command<AudioPlayerComponent>(
+          action: (audioPlayer) {
+            audioPlayer.playSoundEffects('powerUp.ogg');
+          },
+        ),
+      );
       onActivated();
       removeFromParent();
     }

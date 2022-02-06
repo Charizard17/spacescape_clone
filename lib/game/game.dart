@@ -7,6 +7,7 @@ import 'package:flame/input.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame/palette.dart';
 import 'package:provider/provider.dart';
+import 'package:spacescape_clone/game/audio_player_component.dart';
 
 import './power_up_manager.dart';
 import './power_ups.dart';
@@ -32,6 +33,8 @@ class SpacescapeGame extends FlameGame
   late PowerUpManager _powerUpManager;
   late JoystickComponent joystick;
 
+  late AudioPlayerComponent _audioPlayerComponent;
+
   late TextComponent _playerScore;
   late TextComponent _playerHealth;
 
@@ -50,6 +53,9 @@ class SpacescapeGame extends FlameGame
         'multi_fire.png',
         'nuke.png',
       ]);
+
+      _audioPlayerComponent = AudioPlayerComponent();
+      add(_audioPlayerComponent);
 
       final spaceshipType = SpaceshipType.Phoenix;
       final spaceShip = Spaceship.getSpaceshipByType(spaceshipType);
@@ -84,6 +90,14 @@ class SpacescapeGame extends FlameGame
             level: spaceShip.level,
           );
           add(bullet);
+
+          addCommand(
+            Command<AudioPlayerComponent>(
+              action: (audioPlayer) {
+                audioPlayer.playSoundEffects('laserSmall.ogg');
+              },
+            ),
+          );
 
           if (_player.isShootMultipleBullets) {
             for (int i = -1; i < 2; i += 2) {
@@ -169,7 +183,16 @@ class SpacescapeGame extends FlameGame
       _player.setSpaceshipType(playerData.spaceshipType);
     }
 
+    _audioPlayerComponent.playBackgroundMusic('SynthBomb.wav');
+
     super.onAttach();
+  }
+
+  @override
+  void onDetach() {
+    _audioPlayerComponent.stopBackgroundMusic();
+
+    super.onDetach();
   }
 
   @override

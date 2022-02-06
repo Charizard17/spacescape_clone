@@ -12,6 +12,7 @@ import './knows_game_size.dart';
 import './player.dart';
 import './bullet.dart';
 import './game.dart';
+import './audio_player_component.dart';
 
 class Enemy extends SpriteComponent
     with KnowsGameSize, HasHitboxes, Collidable, HasGameRef<SpacescapeGame> {
@@ -87,6 +88,14 @@ class Enemy extends SpriteComponent
 
   void destroy() {
     this.removeFromParent();
+
+    gameRef.addCommand(
+      Command<AudioPlayerComponent>(
+        action: (audioPlayer) {
+          audioPlayer.playSoundEffects('laser.ogg');
+        },
+      ),
+    );
 
     final command = Command<Player>(action: (player) {
       player.addToScore(enemyData.killPoint);
