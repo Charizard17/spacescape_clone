@@ -120,6 +120,8 @@ class Player extends SpriteComponent
     _score += points;
     _playerData.currentScore = _score;
     _playerData.money += points;
+
+    _playerData.save();
   }
 
   void increaseHealthBy(int points) {

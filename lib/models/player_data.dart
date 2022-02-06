@@ -6,7 +6,7 @@ import './spaceship_details.dart';
 part 'player_data.g.dart';
 
 @HiveType(typeId: 0)
-class PlayerData extends ChangeNotifier {
+class PlayerData extends ChangeNotifier with HiveObjectMixin {
   @HiveField(0)
   SpaceshipType spaceshipType;
 
@@ -61,11 +61,13 @@ class PlayerData extends ChangeNotifier {
       this.money -= Spaceship.getSpaceshipByType(spaceshipType).cost;
       this.ownedSpaceships.add(spaceshipType);
       notifyListeners();
+      this.save();
     }
   }
 
   void equip(SpaceshipType spaceshipType) {
     this.spaceshipType = spaceshipType;
     notifyListeners();
+    this.save();
   }
 }
