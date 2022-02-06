@@ -17,6 +17,16 @@ class Enemy extends SpriteComponent
     with KnowsGameSize, HasHitboxes, Collidable, HasGameRef<SpacescapeGame> {
   late double _speed;
   int _hitPoints = 10;
+  TextComponent _hpText = TextComponent(
+    text: '10 HP',
+    position: Vector2(10, 10),
+    textRenderer: TextPaint(
+      style: TextStyle(
+        fontSize: 16,
+        color: Colors.white,
+      ),
+    ),
+  );
   late Timer _freezeTimer;
 
   final EnemyData enemyData;
@@ -41,6 +51,7 @@ class Enemy extends SpriteComponent
     angle = pi;
     _speed = enemyData.speed;
     _hitPoints = enemyData.level * 10;
+    _hpText.text = '$_hitPoints HP';
     _freezeTimer = Timer(2, onTick: () {
       _speed = enemyData.speed;
     });
@@ -56,6 +67,11 @@ class Enemy extends SpriteComponent
 
     final shape = HitboxCircle(normalizedRadius: 0.8);
     addHitbox(shape);
+
+    _hpText.angle = pi;
+    _hpText.position = Vector2(40, 90);
+    _hpText.anchor = Anchor.center;
+    add(_hpText);
   }
 
   @override
@@ -105,6 +121,13 @@ class Enemy extends SpriteComponent
   void update(double dt) {
     super.update(dt);
 
+    _hpText.text = '$_hitPoints HP';
+    _hpText.textRenderer = TextPaint(
+      style: TextStyle(
+        fontSize: 16,
+        color: _hitPoints >= 30 ? Colors.red : Colors.amber,
+      ),
+    );
     if (_hitPoints <= 0) {
       destroy();
     }
