@@ -55,7 +55,7 @@ class Player extends SpriteComponent
   void update(double dt) {
     super.update(dt);
 
-    // this.position += _moveDirection.normalized() * _speed * dt;
+    this.position += _moveDirection.normalized() * _spaceship.speed * dt;
 
     if (!joystick.delta.isZero()) {
       position.add(joystick.relativeDelta * _spaceship.speed * dt);

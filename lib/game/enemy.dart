@@ -20,10 +20,15 @@ class Enemy extends SpriteComponent
   late Timer _freezeTimer;
 
   final EnemyData enemyData;
+  Vector2 moveDirection = Vector2(0, 1);
 
   Random _random = Random();
   Vector2 getRandomVector() {
     return (Vector2.random(_random) - Vector2.random(_random)) * 400;
+  }
+
+  Vector2 getRandomDirection() {
+    return (Vector2.random(_random) - Vector2(0.5, -2)).normalized();
   }
 
   Enemy({
@@ -38,6 +43,10 @@ class Enemy extends SpriteComponent
     _freezeTimer = Timer(2, onTick: () {
       _speed = enemyData.speed;
     });
+
+    if (enemyData.hMove) {
+      moveDirection = getRandomDirection();
+    }
   }
 
   @override
@@ -93,12 +102,14 @@ class Enemy extends SpriteComponent
   void update(double dt) {
     super.update(dt);
 
-    this.position += Vector2(0, 1) * _speed * dt;
+    this.position += moveDirection * _speed * dt;
 
     if (this.position.y > this.gameSize.y) {
       removeFromParent();
+    } else if ((this.position.x < this.size.x / 2) ||
+        (this.position.x > (this.gameSize.x - size.x / 2))) {
+      moveDirection.x *= -1;
     }
-
     _freezeTimer.update(dt);
   }
 }

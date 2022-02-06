@@ -26,7 +26,6 @@ class EnemyManager extends Component
   void _spawnEnemy() {
     Vector2 initialSize = Vector2(80, 80);
     Vector2 position = Vector2(random.nextDouble() * gameSize.x, 0);
-    var randomEnemyId = ([3, 12, 13, 39]..shuffle()).first;
 
     position.clamp(
         Vector2.zero() + initialSize / 2, gameSize - initialSize / 2);
@@ -80,7 +79,7 @@ class EnemyManager extends Component
       level: 1,
       speed: 200,
       killPoint: 10,
-      hMove: false,
+      hMove: true,
       spriteId: 23,
     ),
     EnemyData(
@@ -143,7 +142,7 @@ class EnemyManager extends Component
       level: 5,
       speed: 500,
       killPoint: 40,
-      hMove: true,
+      hMove: false,
       spriteId: 1,
     ),
   ];
