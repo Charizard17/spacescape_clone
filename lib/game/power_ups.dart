@@ -46,13 +46,9 @@ abstract class PowerUp extends SpriteComponent
   @override
   void onCollision(Set<Vector2> intersectionPoints, Collidable other) {
     if (other is Player) {
-      gameRef.addCommand(
-        Command<AudioPlayerComponent>(
-          action: (audioPlayer) {
-            audioPlayer.playSoundEffects('powerUp.ogg');
-          },
-        ),
-      );
+      // gameRef.addCommand(Command<AudioPlayerComponent>(action: (audioPlayer) {
+      //   audioPlayer.playSoundEffects('powerUp.ogg');
+      // }));
       onActivated();
       removeFromParent();
     }

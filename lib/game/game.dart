@@ -33,7 +33,7 @@ class SpacescapeGame extends FlameGame
   late PowerUpManager _powerUpManager;
   late JoystickComponent joystick;
 
-  late AudioPlayerComponent _audioPlayerComponent;
+  // late AudioPlayerComponent _audioPlayerComponent;
 
   late TextComponent _playerScore;
   late TextComponent _playerHealth;
@@ -54,8 +54,8 @@ class SpacescapeGame extends FlameGame
         'nuke.png',
       ]);
 
-      _audioPlayerComponent = AudioPlayerComponent();
-      add(_audioPlayerComponent);
+      // _audioPlayerComponent = AudioPlayerComponent();
+      // add(_audioPlayerComponent);
 
       final spaceshipType = SpaceshipType.Phoenix;
       final spaceShip = Spaceship.getSpaceshipByType(spaceshipType);
@@ -91,13 +91,9 @@ class SpacescapeGame extends FlameGame
           );
           add(bullet);
 
-          addCommand(
-            Command<AudioPlayerComponent>(
-              action: (audioPlayer) {
-                audioPlayer.playSoundEffects('laserSmall.ogg');
-              },
-            ),
-          );
+          // addCommand(Command<AudioPlayerComponent>(action: (audioPlayer) {
+          //   audioPlayer.playSoundEffects('laserSmall.ogg');
+          // }));
 
           if (_player.isShootMultipleBullets) {
             for (int i = -1; i < 2; i += 2) {
@@ -183,14 +179,14 @@ class SpacescapeGame extends FlameGame
       _player.setSpaceshipType(playerData.spaceshipType);
     }
 
-    _audioPlayerComponent.playBackgroundMusic('SynthBomb.wav');
+    // _audioPlayerComponent.playBackgroundMusic('SynthBomb.wav');
 
     super.onAttach();
   }
 
   @override
   void onDetach() {
-    _audioPlayerComponent.stopBackgroundMusic();
+    // _audioPlayerComponent.stopBackgroundMusic();
 
     super.onDetach();
   }

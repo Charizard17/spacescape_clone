@@ -89,13 +89,9 @@ class Enemy extends SpriteComponent
   void destroy() {
     this.removeFromParent();
 
-    gameRef.addCommand(
-      Command<AudioPlayerComponent>(
-        action: (audioPlayer) {
-          audioPlayer.playSoundEffects('laser.ogg');
-        },
-      ),
-    );
+    // gameRef.addCommand(Command<AudioPlayerComponent>(action: (audioPlayer) {
+    //   audioPlayer.playSoundEffects('laser.ogg');
+    // }));
 
     final command = Command<Player>(action: (player) {
       player.addToScore(enemyData.killPoint);
