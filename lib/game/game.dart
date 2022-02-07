@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flame/parallax.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
@@ -56,6 +57,18 @@ class SpacescapeGame extends FlameGame
 
       // _audioPlayerComponent = AudioPlayerComponent();
       // add(_audioPlayerComponent);
+
+      ParallaxComponent _starts = await ParallaxComponent.load(
+        [
+          ParallaxImageData('stars1.png'),
+          ParallaxImageData('stars2.png'),
+        ],
+        repeat: ImageRepeat.repeat,
+        baseVelocity: Vector2(0, -20),
+        velocityMultiplierDelta: Vector2(0, 1.1),
+      );
+
+      add(_starts);
 
       final spaceshipType = SpaceshipType.Phoenix;
       final spaceShip = Spaceship.getSpaceshipByType(spaceshipType);
